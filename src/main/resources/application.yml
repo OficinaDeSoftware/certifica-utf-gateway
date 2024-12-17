@@ -1,0 +1,24 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: certifica-utf-back-end
+          uri: lb://CERTIFICA-UTF-BACK-END
+          predicates:
+            - Path=/api/evento/**
+          filters:
+            - AuthenticationFilter
+
+        - id: certifica_utf_auth
+          uri: lb://CERTIFICA-UTF-AUTH
+          predicates:
+            - Path=/api/auth/**
+
+  application:
+    name: CERTIFICA_UTF_GATEWAY
+
+eureka:
+  client:
+    service-url:
+      defaultZone : http://localhost:8761/eureka/
+    fetch-registry: true
