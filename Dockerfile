@@ -1,16 +1,15 @@
-FROM ubuntu:latest AS build
+FROM maven:3.9.6-eclipse-temurin-17-alpine AS build
 
-RUN apt-get update
-RUN apt-get install openjdk-17-jdk -y
 COPY . .
 
-RUN apt-get install maven -y
-RUN mvn clean install
+RUN mvn clean package -DskipTests && \
+    rm -rf /root/.m2/repository &&  \
+    rm -rf /target/*sources.jar
 
-FROM openjdk:17-jdk-slim
+FROM eclipse-temurin:17-jre-alpine
 
-EXPOSE 8080
+EXPOSE 5050
 
 COPY --from=build /target/certifica-utf-gateway-0.0.1-SNAPSHOT.jar app.jar
 
-ENTRYPOINT [ "java", "-jar", "app.jar" ]
+ENTRYPOINT ["java", "-jar", "app.jar"]
