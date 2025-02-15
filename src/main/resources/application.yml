@@ -5,7 +5,7 @@ spring:
         - id: certifica-utf-back-end
           uri: lb://CERTIFICA-UTF-BACK-END
           predicates:
-            - Path=/api/evento/**
+            - Path=/api/event/**, /api/resources/**, /api/certificate/**
           filters:
             - AuthenticationFilter
 
